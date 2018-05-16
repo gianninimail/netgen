@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="ccbh4851System" transaction-type="RESOURCE_LOCAL">
+		<class>entidades.Reacao</class>
+		<class>entidades.Genoma</class>
+		<class>entidades.Gene</class>
+		<class>entidades.EnzimaBrenda</class>
+		<class>entidades.Componente</class>
+		<class>entidades.ReacaoTemComponentes</class>
+		<class>entidades.RTCid</class>
+		<class>entidades.Proteina</class>
+		<class>entidades.Organismo</class>
+		<class>entidades.Reconstrucao</class>
+		<class>entidades.GeneAssociacao</class>
+		<class>entidades.Usuario</class>
+		<class>entidades.LimiteFluxo</class>
+		<class>entidades.ReconstrucaoTemReacoes</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ccbh4851system"/>
+			<property name="javax.persistence.jdbc.user" value="ccbh4851"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="javax.persistence.jdbc.password" value="ccbh4851"/>
+			<property name="eclipselink.ddl-generation" value="create-tables"/>
+			<property name="eclipselink.ddl-generation.output-mode" value="both"/>
+			<property name="eclipselink.application-location" value="/home/thiago/eclipse-workspace/ccbh4851System"/>
+		</properties>
+	</persistence-unit>
+</persistence>

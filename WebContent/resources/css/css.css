@@ -1,0 +1,198 @@
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 90% !important;
+}
+
+/* ================================================================== */
+
+/*================ PAGINA DE GERACAO DA REDE METAB. ====================*/
+
+.listaReacoesConfirmadas {
+	padding-left: 50px !important;
+	height: 100% !important;
+	width: 280px !important;
+	font-weight: bold;
+}
+
+.ui-picklist-list {
+	width: 280px !important;
+}
+
+.paineisWizard {
+	height: 400px !important;
+}
+
+.letraNegrito {
+	font-weight: bold !important;
+}
+
+.painelButoesDialogReconstrucao {
+	height: 40px !important;
+	width: 70px !important;
+	/*margin-bottom: 1px !important;
+	padding-bottom: 1px !important;*/
+}
+
+.butoesDialogReconstrucao {
+	height: 40px !important;
+	width: 100px !important;
+	/*margin-bottom: 1px !important;
+	padding-bottom: 1px !important;*/
+}
+
+.redeM {
+	float: left !important;
+}
+
+.pComandos {
+	float: left;
+	border: thick;
+	height: 30% !important;
+	width: 30% !important;
+	text-align: center !important;
+}
+
+.pSaidaComandos {
+	float: right !important;
+}
+
+.textoSaida {
+	
+	font-weight: bold !important;
+	color: #ff0080;
+	text-align: justify !important;
+	border: 0px;
+	resize: none;
+}
+
+.fReconstruction {
+	
+}
+
+.btnGerar {
+	 height: 35px !important;
+}
+
+.lDados {
+	font-weight: bold !important;
+	color: orange !important;
+}
+
+/* ========================================================= */
+
+/*======================== RODAPE ===========================*/
+.copyright {
+	float: left !important;
+	margin-top: 0px !important;
+	top: 1px !important;
+	height: 35 !important;
+	border: none !important;
+	padding-top: 0px !important;
+}
+
+.copyrightC {
+	border: none !important;
+	margin-top: 0px !important;
+	color: #0080c0 !important;
+	top: 1px !important;
+}
+
+.relogio {
+	float: right !important;
+	margin-top: 0px !important;
+	top: 1px !important;
+	height: 35 !important;
+	border: none !important;
+	padding-top: 0px !important;
+}
+
+.ui-clock {
+	background: none;
+	border: none !important;
+	margin-top: 0px !important;
+	color: #0080c0 !important;
+	top: 1px !important;
+}
+/* ================================================================== */
+
+/*======================== CABECALHO ===========================*/
+
+.nomeSis {
+	right: 50px;
+	font-size: 35px !important;
+	text-align: center !important;
+	float: inherit !important;
+	color: white !important;
+	background-color: #0080c0 !important;
+}
+
+.home {
+	height: 40px;
+	float: left !important;
+	margin-top: 0px !important;
+	top: 1px !important;
+	height: 35 !important;
+	border: none !important;
+	padding-top: 0px !important;
+	color: #a40000 !important;
+}
+
+.logout {
+	float: right !important;
+	margin-top: 0px !important;
+	top: 1px !important;
+	height: 35 !important;
+	border: thin; !important;
+	padding-top: 0px !important;
+}
+
+.btnLogout {
+	float: right !important;
+	margin-right: 0px !important;
+	padding-right: 0px !important;
+}
+
+.userLogado {
+	float: right !important;
+	margin-top: 0px !important;
+	top: 1px !important;
+	color: #008000!important;
+	text-align: right !important;
+}
+/* ================================================================== */
+
+/*========================== PAGINA INDEX ===========================*/
+
+.painelGridTextoSistema {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 25px !important;
+	color: #0080c0 !important;
+}
+
+.imgCabecalho {
+	float:none; 
+	display:block; 
+	margin-left:auto; 
+	margin-right:auto;
+}
+
+.imgRede {
+	float:none; 
+	display:block; 
+	margin-left:auto; 
+	margin-right:auto;
+}
+
+#tituloPrincipal {
+	font-family: sans-serif; 
+	text-align: center;
+	color: #0080c0;
+}
+/* =========================== PAGINA DE LOGIN ========================= */
+
+.paginaLogin {
+	float: none;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}

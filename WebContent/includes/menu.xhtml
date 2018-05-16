@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+	<h:form>
+		<p:menu style="width:auto">
+
+			<p:submenu label="Gerenciamento" expanded="false">
+	
+				<p:menuitem value="Cadastro Usuários" icon="ui-icon-disk"
+					onclick="window.location.href='/netgen/cadastro/cad_usuarios.jsf'" />
+					
+				<p:menuitem value="Cadastro Pesquisadores" icon="ui-icon-person"
+					onclick="window.location.href='/netgen/cadastro/cad_pesquisadores.jsf'" />
+					
+				<p:menuitem value="Grafo da R. Metabólica" icon="ui-icon-image"
+					onclick="window.location.href='/netgen/metabolismo/grafo.jsf'" />
+				
+				<p:menuitem value="Desafios" icon="ui-icon-lightbulb"
+					onclick="window.location.href='/netgen/cadastro/cad_desafios.jsf'" />
+					
+				<p:menuitem value="Resolução de Desafios" icon="ui-icon-wrench"
+					onclick="window.location.href='/netgen/analise/resolucao_desafios.jsf'" />
+				
+				<p:menuitem value="Análises de Respostas" icon="ui-icon-script"
+					onclick="window.location.href='/netgen/analise/analise_respostas.jsf'" />
+					
+			</p:submenu>
+			
+		</p:menu>
+		
+	</h:form>
+</ui:composition>

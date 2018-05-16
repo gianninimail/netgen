@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+	<ui:define name="cabecalho">
+		<ui:include src="/includes/cabecalho.xhtml" />
+	</ui:define>
+	
+	<ui:define name="conteudo">
+		
+		<p:graphicImage styleClass="imgRede" height="310" width="310" 
+			url="/resources/imagens/rede-principal.png" />
+		
+		<p:graphicImage styleClass="imgCabecalho" height="100" width="700"
+			url="/resources/imagens/titulo-netgen.png" />
+					
+		
+		
+		<h:panelGrid id="menu" styleClass="menu" columns="1">
+			
+			<p:dock position="bottom" >
+			    
+			    <p:menuitem value="Metabolic Network" 
+			    	icon="/resources/imagens/engrenagens.png" 
+			    	url="/construcao/gerar_rede.jsf"/>
+			
+			</p:dock>
+			
+		</h:panelGrid>
+	</ui:define>
+	
+	<ui:define name="rodape">
+	   <ui:include src="/includes/rodape.xhtml" />
+	</ui:define>
+
+</ui:composition>

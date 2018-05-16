@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/templates/template.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+	<ui:define name="cabecalho">
+		<ui:include src="/includes/cabecalho.xhtml" />
+	</ui:define>
+	
+	<ui:define name="conteudo">
+		
+		<h:form id="f">
+			
+			<p:growl id="growl" sticky="true" showDetail="true"/>
+			
+			<h:panelGrid width="30%" id="pComandos" styleClass="pComandos" columns="1">
+				 
+				<br />
+				<br />
+				
+				<p:graphicImage height="200" width="200" url="/resources/imagens/engrenagens.png" />
+				 
+				<br />
+				<br />
+				<br />
+							    	
+				<p:commandButton value="New reconstruction" styleClass="btnGerar"
+			    	oncomplete="PF('dlgNovoExec').show();"
+			    	update=":fExec:pgExec" />
+				 	
+			</h:panelGrid>
+			
+			<h:panelGrid id="pSaidaComandos" styleClass="pSaidaComandos" columns="1">
+			
+				<p:inputTextarea rows="25" cols="90" readonly="true" styleClass="textoSaida"
+					value="#{principalBean.textoSaida}" autoResize="false" label="Saída" />
+					
+			</h:panelGrid>
+			
+		</h:form>
+		
+		<p:dialog header="New Background Execution" widgetVar="dlgNovoExec" height="550" width="750"
+			modal="true" appendTo="@(body)"
+			draggable="false" resizable="false" closable="false" >
+		    
+		    <h:form id="fExec" styleClass="fReconstruction">
+		    
+				<p:wizard flowListener="#{principalBean.onFlowProcess}">
+			 
+			        <p:tab id="auto" title="Reconstruction Info" >
+			            <p:panel header="Reconstruction information" styleClass="paineisWizard">
+			               
+			                <p:messages />
+			                
+			                <h:panelGrid id="pgExec" columns="2">
+		    	
+						    	<p:outputLabel value="Auto ID:"/>
+								<p:outputLabel id="id" value="#{USUARIOLogado.id}" styleClass="lDados" />
+								
+								<p:outputLabel value="Enter your name:"/>
+								<p:outputLabel id="nome" value="#{USUARIOLogado.nome}" styleClass="lDados" />
+								
+								<p:outputLabel value="Enter your e-mail: "/>
+								<p:outputLabel id="email" value="#{USUARIOLogado.email}" styleClass="lDados" required="true" />
+			
+					            <p:outputLabel value="Title of Reconstruction:"/>
+								<p:inputText id="titulo" value="#{principalBean.tituloRede}" />
+								
+								<p:outputLabel value="Version of Reconstruction:"/>
+								<p:inputText id="versao" value="#{principalBean.versaoRede}" />
+								
+								<p:outputLabel value="Name of output SBML"/>
+								<p:inputText id="saidaSBML" value="#{principalBean.nomeArquivoSaidaSBML}" />
+								
+								<p:outputLabel value="Table From(NBCI)/To(PA) for ID's"/>
+								<p:inputText id="tabId" value="#{principalBean.nomeArquivoTabID}" disabled="true" />
+					            
+					            <p:outputLabel value="Inferring genes?"/>
+								<p:selectBooleanCheckbox value="#{principalBean.inferirGenes}" itemLabel="YES" >
+								</p:selectBooleanCheckbox>
+					            
+					            <p:outputLabel value="Select Upload GBK File:" />
+					            <p:fileUpload value="#{principalBean.arqGBK}"
+					            	fileUploadListener="#{principalBean.executarFileUploadGBK}"
+					            	dragDropSupport="false" required="true" mode="advanced"
+					             	update=":msgGlobal" fileLimit="1" allowTypes="/(\.|\/)(gb)$/" 
+					             	 />
+					             	
+					            <p:outputLabel value="Select Upload SBML Base File:" />
+					            <p:fileUpload value="#{principalBean.arqSBMLbase}"
+					            	fileUploadListener="#{principalBean.executarFileUploadSBML}"
+					            	dragDropSupport="false" required="true" mode="advanced"
+					             	update=":msgGlobal" fileLimit="1" allowTypes="/(\.|\/)(xml|sbml)$/" 
+					             	/>
+								
+								<p:message for="email" display="tooltip" />
+					            
+							</h:panelGrid>
+			            
+			            </p:panel>
+			        </p:tab>
+			 
+			        <p:tab id="inferencia" title="Inference">
+			            
+			            <p:panel header="Reactions in the Inference" styleClass="paineisWizard">
+			               
+			                <p:messages />
+			               
+			                <h:panelGrid columns="1" style="width: 100%" border="0">
+			                    
+			                    <p:pickList value="#{principalBean.reacoes}" responsive="true"
+			                    	var="rs" itemLabel="#{rs}" itemValue="#{rs}" showCheckbox="false"
+			                    	showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >
+			                    
+			                    	<f:facet name="sourceCaption">Available</f:facet>
+        							<f:facet name="targetCaption">Starting</f:facet>
+							        
+			                    </p:pickList>
+			                    
+			                </h:panelGrid>
+			                
+			            </p:panel>
+			            
+			        </p:tab>
+			 
+			        <p:tab id="confirm" title="Confirmation">
+			            
+			            <p:panel header="Confirmation" styleClass="paineisWizard">
+			                    
+		                    <h:panelGrid columns="2" columnClasses="label, value" style="height: 100%; float: left;">
+		                        
+		                        <p:outputLabel value="Enter your e-mail: "/>
+								<p:outputLabel value="#{USUARIOLogado.email}" styleClass="lDados" />
+			
+					            <p:outputLabel value="Title of Reconstruction:"/>
+								<p:outputLabel value="#{principalBean.tituloRede}" styleClass="letraNegrito" />
+								
+								<p:outputLabel value="Version of Reconstruction:"/>
+								<p:outputLabel value="#{principalBean.versaoRede}" styleClass="letraNegrito" />
+								
+								<p:outputLabel value="Name of output SBML"/>
+								<p:outputLabel value="#{principalBean.nomeArquivoSaidaSBML}" styleClass="letraNegrito" />
+								
+								<p:outputLabel value="Table From(NBCI)/To(PA) for ID's"/>
+								<p:outputLabel value="#{principalBean.nomeArquivoTabID}" styleClass="letraNegrito" />
+								
+								<p:outputLabel value="Name of GBK File:" />
+				            	<p:outputLabel value="#{principalBean.nomeArquivoGBK}" styleClass="letraNegrito" />
+					            
+								<p:outputLabel value="Name of SBML Base File:" />
+								<p:outputLabel value="#{principalBean.nomeArquivoBaseSBML}" styleClass="letraNegrito" />
+								
+								<p:outputLabel value="Inferring genes?"/>
+								<p:outputLabel value="#{principalBean.inferirGenes == true ? 'YES' : 'NO'}" styleClass="letraNegrito" />
+								
+		                    </h:panelGrid>
+		 
+		                    <h:panelGrid columns="1" columnClasses="label, value" style="height: 100px; width: auto">
+		                       
+		                        <p:dataList id="listaR" value="#{principalBean.reacoes.target}" 
+		                        	var="r" type="ordered" styleClass="listaReacoesConfirmadas"
+		                        	paginator="true" rows="15" >
+		                        	
+							        <f:facet name="header">
+							            List of Reactions Inferred
+							        </f:facet>
+							        #{r}
+							        <!-- <p:commandLink update=":frDetail:rDetail" oncomplete="PF('rDialog').show()" title="View Detail" styleClass="ui-icon ui-icon-search" 
+        								style="float:left;margin-right:10px">
+							            
+							            <f:setPropertyActionListener value="#{rs}" target="#{principalBean.selectedReacrion}" />
+							        
+							        </p:commandLink>
+							        
+							        <h:outputText value="#{rs}" style="display:inline-block"/> -->
+							        
+							    </p:dataList>
+							    
+		                    </h:panelGrid>
+   
+			            </p:panel>
+			            
+			        </p:tab>
+			        
+			    </p:wizard>
+			    		    	
+				<br />
+				
+			    <h:panelGrid columns="2" styleClass="painelButoesDialogReconstrucao">
+				
+					<p:commandButton value="Start" oncomplete="PF('dlgNovoExec').hide();" 
+						actionListener="#{principalBean.ExecutarEmSegundoPlano}" 
+						update=":msgGlobal :f:pSaidaComandos" styleClass="butoesDialogReconstrucao" />
+				
+					<p:commandButton value="Cancel" oncomplete="PF('dlgNovoExec').hide();" 
+						actionListener="#{principalBean.CancelarReconstrucao}"
+						update=":msgGlobal" styleClass="butoesDialogReconstrucao" />
+
+				</h:panelGrid>
+		    
+		    </h:form>
+		    
+		</p:dialog>
+		
+		<p:dialog header="Reaction Info" widgetVar="rDialog" modal="true" showEffect="blind" hideEffect="explode" resizable="false">
+	       
+	        <h:form id="frDetail" styleClass="fReconstruction" >
+		        
+		        <p:outputPanel id="rDetail" style="text-align:center;">
+		            
+		            <p:panelGrid  columns="2" rendered="#{not empty dataListView.selectedCar}" columnClasses="label,value">
+		                
+		                <f:facet name="header">
+		                    <p:graphicImage name="demo/images/car/#{dataListView.selectedCar.brand}-big.gif"/> 
+		                </f:facet>
+		 
+		                <h:outputText value="Id:" />
+		                <h:outputText value="#{dataListView.selectedCar.id}" />
+		 
+		                <h:outputText value="Year" />
+		                <h:outputText value="#{dataListView.selectedCar.year}" />
+		 
+		                <h:outputText value="Color:" />
+		                <h:outputText value="#{dataListView.selectedCar.color}" style="color:#{dataListView.selectedCar.color}"/>
+		 
+		                <h:outputText value="Price" />
+		                <h:outputText value="$#{dataListView.selectedCar.price}" />
+		                
+		            </p:panelGrid>
+		            
+		        </p:outputPanel>
+		        
+	        </h:form>
+	        
+    	</p:dialog>
+		
+	</ui:define>
+	
+	<ui:define name="rodape">
+	   <ui:include src="/includes/rodape.xhtml" />
+	</ui:define>
+
+</ui:composition>
