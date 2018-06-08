@@ -124,7 +124,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		this.jsbmlBeanV2L1 = new JsbmlBeanV2L1(pathAreTrabalho + this.nomeArquivoBaseSBML);
 	}
 
-	public void reconstruirRedeMetabolica() {
+	public void reconstruirRedeMetabolicaV2L1() {
 		
 		String dataInicial = new Date().toString();
 		
@@ -142,7 +142,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		
 		String dataFinal = new Date().toString();
 		
-		executarAnaliseFBA(this.nomeArquivoSaidaSBML);
+		this.logReconstrucao = executarAnaliseFBA(this.nomeArquivoSaidaSBML, this.nomeArquivoSaidaSBML);
 		
 		EnviarEmail(dataInicial, dataFinal);
 	}
@@ -333,13 +333,13 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		}
 	}
 	
-	private String executarAnaliseFBA(String _nomeArquivoSBML) {
+	private String executarAnaliseFBA(String _nomeArquivoSBML, String _idRede) {
 
 		try {
 			
 			String log = "";
 		
-			String scriptFBA = "python testeCCBH4851.py " + _nomeArquivoSBML;
+			String scriptFBA = "python testeCCBH4851.py " + _nomeArquivoSBML + " " + _idRede;
 			
 			File diretorio = new File(pathAreTrabalho);
 
@@ -362,7 +362,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 				System.out.println(linha);
 			}
 			
-			System.out.println("FIM SCRIPT");
+			System.out.println("\nFIM SCRIPT");
 			
 			//FIM DO SCRIPT
 
@@ -491,8 +491,9 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 				+ "\nDate and Time Start: " + _dataInicial
 				+ "\nDate and Time Finish: " + _dataFinal
 				+ "\n\n\n\n"
-				+ "================================================================="
+				+ "-----------------------------------------------------"
 				+ "\nSCRIPT OUTPUT"
+				+ "====================================================="
 				+ "\n" + this.logReconstrucao
 				+ "";
 			
@@ -623,6 +624,6 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 	
 	@Override
 	public void run() {
-		reconstruirRedeMetabolica();
+		reconstruirRedeMetabolicaV2L1();
 	}
 }

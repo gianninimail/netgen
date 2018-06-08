@@ -217,6 +217,25 @@ public class JsbmlBeanV2L1 implements Serializable {
 		}
 	}
 	
+	public String obterECsNumbersDeComentarios(Reaction _reaction) {
+		try {
+			
+			XMLNode noECnumber = _reaction.getNotes().getChild(1).getChild(5).getChild(0);
+			
+			String[] info = noECnumber.getCharacters().replaceAll(":\\s", ":").split(":");
+			
+			if (info.length > 1) {
+				return info[1];
+			}
+			
+			return "";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public List<String> obterListaGenesAssociadosDeComentarios(Reaction _reaction) {
 		try {
 			
@@ -305,6 +324,9 @@ public class JsbmlBeanV2L1 implements Serializable {
 				
 				reacao = obterReacaoDeReaction(_reaction);
 				daoR.Inserir(reacao);
+				
+				//TENTAR PEGAR EC NUNBER e CRIAR OBJETO ENZIMA NO BD
+				String ECnumber = obterECsNumbersDeComentarios(_reaction);
 			}
 			else {
 				
