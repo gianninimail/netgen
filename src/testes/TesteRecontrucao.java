@@ -33,30 +33,31 @@ public class TesteRecontrucao {
 			List<String> listaReactionsManuais = new ArrayList<String>();
 			
 			
-			//-----------GENES INFERIDOS MÁRCIO---------//
-			listaReactionsManuais.add("R_rxn02476");
-			listaReactionsManuais.add("R_rxn00695");
-			listaReactionsManuais.add("R_ATPM");
+			//-----------GENES INFERIDOS MANUALMENTE---------//
+			//listaReactionsManuais.add("R_rxn02476");
+			//listaReactionsManuais.add("R_rxn00695");
+			//listaReactionsManuais.add("R_ATPM");
 			//------------------------------------------
 			listaReactionsManuais.add("R_rxn05468");//VERIFICAR
-			listaReactionsManuais.add("R_rPY00182");
-			listaReactionsManuais.add("R_rPY00180");
-			listaReactionsManuais.add("R_rPY00166");
-			listaReactionsManuais.add("R_rPY00171");
-			listaReactionsManuais.add("R_rPY00174");
-			listaReactionsManuais.add("R_rPY00177");
+			
 			//--------GENES NO GBK - EC NUMBERS --------
-			//listaReactionsManuais.add("R_rxn01268");
-			//listaReactionsManuais.add("R_rxn01729");
-			//listaReactionsManuais.add("R_rxn05064");
-			//listaReactionsManuais.add("R_rxn13789");
-			//listaReactionsManuais.add("R_rxn00420");
+			/*
+			listaReactionsManuais.add("R_rPY00182");//GBK
+			listaReactionsManuais.add("R_rPY00180");//GBK
+			listaReactionsManuais.add("R_rPY00166");//GBK
+			listaReactionsManuais.add("R_rPY00171");//GBK
+			listaReactionsManuais.add("R_rPY00174");//GBK
+			listaReactionsManuais.add("R_rPY00177");//GBK
+			listaReactionsManuais.add("R_rxn13789");//GBK
+			listaReactionsManuais.add("R_rxn00420");//GBK
+			listaReactionsManuais.add("R_rxn01268");//GBK
+			listaReactionsManuais.add("R_rxn01729");//GBK
+			listaReactionsManuais.add("R_rxn05064");//GBK
+			*/
 			
 			//listaReactionsManuais.add("R_rxn05467");
 			//listaReactionsManuais.add("R_rxn05319");
 			//listaReactionsManuais.add("R_rxn10577");
-			
-			
 			
 			
 			//int colunaID = 1;
