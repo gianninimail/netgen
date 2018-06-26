@@ -13,11 +13,13 @@ public interface GeneINTdao {
 
 	void Excluir(Gene _gene) throws SQLException;
 	
-	void ExcluirPorID(final Long _id) throws SQLException;
+	void ExcluirPorID(final String _id) throws SQLException;
 
-	Gene PegarPeloID(Long _id) throws SQLException;
+	Gene PegarPeloID(String _id) throws SQLException;
 
 	Long PegarID() throws SQLException;
 	
 	List<Gene> listarTodos() throws SQLException;
+	
+	boolean ExisteGene(String _id) throws SQLException;
 }

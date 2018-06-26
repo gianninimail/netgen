@@ -23,7 +23,7 @@ public class TesteRecontrucao {
 			user.setTipoUsuario(1);
 			
 			//String nomeArquivoFASTA = "saidaFasta.fasta";
-			String nomeArquivoSaidaSBML = "CCBH4851_v1.xml";
+			String nomeArquivoSaidaSBML = "CCBH4851_v2.xml";
 			String nomeArquivoGBK = "CCBH4851.gb";
 			//String nomeArquivoBaseSBML = "MODEL1507180020.xml";
 			String nomeArquivoBaseSBML = "iPAE1146.xml";
@@ -34,14 +34,15 @@ public class TesteRecontrucao {
 			
 			
 			//-----------GENES INFERIDOS MANUALMENTE---------//
-			//listaReactionsManuais.add("R_rxn02476");
-			//listaReactionsManuais.add("R_rxn00695");
-			//listaReactionsManuais.add("R_ATPM");
-			//------------------------------------------
-			listaReactionsManuais.add("R_rxn05468");//VERIFICAR
+			
+			listaReactionsManuais.add("R_rxn02476"); //VERIFICAR - ESSENCIAL
+			listaReactionsManuais.add("R_rxn00695"); //VERIFICAR - ESSENCIAL
+			listaReactionsManuais.add("R_ATPM"); //VERIFICAR - ESSENCIAL
+			
 			
 			//--------GENES NO GBK - EC NUMBERS --------
-			/*
+			
+			
 			listaReactionsManuais.add("R_rPY00182");//GBK
 			listaReactionsManuais.add("R_rPY00180");//GBK
 			listaReactionsManuais.add("R_rPY00166");//GBK
@@ -53,17 +54,21 @@ public class TesteRecontrucao {
 			listaReactionsManuais.add("R_rxn01268");//GBK
 			listaReactionsManuais.add("R_rxn01729");//GBK
 			listaReactionsManuais.add("R_rxn05064");//GBK
+			
+			//------------------------------------------
+			
+			listaReactionsManuais.add("R_rxn05468");//VERIFICAR TRANSPORTE ESSENCIAL
+			
+			/*
+			listaReactionsManuais.add("R_rxn05467"); //TRANSPORTE
+			listaReactionsManuais.add("R_rxn05319"); //TRANSPORTE
+			listaReactionsManuais.add("R_rxn10577"); //TRANSPORTE
 			*/
-			
-			//listaReactionsManuais.add("R_rxn05467");
-			//listaReactionsManuais.add("R_rxn05319");
-			//listaReactionsManuais.add("R_rxn10577");
-			
 			
 			//int colunaID = 1;
 			
 			String tituloRede = "Reconstrução completa";
-			String versaoRede = "1";
+			String versaoRede = "2";
 			
 			String textoSaida = "New Reconstruction started...."
 					+ "\nAt the end, you will receive an email with all the information along with the SBML!"

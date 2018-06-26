@@ -87,7 +87,7 @@ public class ReacaoTemComponentesDAO implements ReacaoTemComponentesINTdao {
 
 	@Override
 	public ReacaoTemComponentes PegarPeloID(String _abbreviationR, String _abbreviationC) throws SQLException {
-
+		
 		ReacaoTemComponentes rhc = entityManager.find(ReacaoTemComponentes.class, _abbreviationR);
 		
 		return rhc;
@@ -106,7 +106,7 @@ public class ReacaoTemComponentesDAO implements ReacaoTemComponentesINTdao {
 
 	@Override
 	public boolean ExisteReacaoTemComponentes(String _abbreviationR, String _abbreviationC, char _tipo_P_ou_R) throws SQLException {
-
+		
 		Query query = entityManager.createQuery("SELECT o FROM ReacaoTemComponentes o WHERE o.reacao.abbreviation = :idR and o.componente.abbreviation = :idC and o.tipo_P_ou_R = :tipo");
 		query.setParameter("idR", _abbreviationR);
 		query.setParameter("idC", _abbreviationC);
@@ -124,5 +124,4 @@ public class ReacaoTemComponentesDAO implements ReacaoTemComponentesINTdao {
 			return false;
 		}
 	}
-
 }

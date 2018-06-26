@@ -76,7 +76,7 @@ public class GenomaDAO implements GenomaINTdao {
 	}
 	
 	@Override
-	public void ExcluirPorID(Long _id) throws SQLException {
+	public void ExcluirPorID(String _id) throws SQLException {
 		
 		Genoma genoma = PegarPeloID(_id);
 		
@@ -85,7 +85,7 @@ public class GenomaDAO implements GenomaINTdao {
 	}
 
 	@Override
-	public Genoma PegarPeloID(Long _id) throws SQLException {
+	public Genoma PegarPeloID(String _id) throws SQLException {
 		
 		Genoma genoma = entityManager.find(Genoma.class, _id);
 		

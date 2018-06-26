@@ -22,16 +22,13 @@ public class Genoma implements Serializable {
 
 	@Id
 	@Column(name = "id")
-	private Long id;
+	private String id;
 	
-	@Column(name = "name")
-	private String nome;
+	@Column(name = "definition")
+	private String definition;
 	
-	@Column(name = "version")
-	private float versao;
-	
-	@Column(name = "ncbi_id")
-	private String ncbi_id;
+	@Column(name = "bp")
+	private float bp;
 	
 	@OneToOne
 	@JoinColumn(name = "organism_id")
@@ -43,48 +40,76 @@ public class Genoma implements Serializable {
 	public Genoma() {
 		
 	}
-	
-	public Genoma(Long _id, String _nome, float _versao, String _ncbi_id, Organismo _organismo) {
-		super();
-		this.id = _id;
-		this.nome = _nome;
-		this.versao = _versao;
-		this.ncbi_id = _ncbi_id;
-		this.organismo = _organismo;
-	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
-	
-	public void setId(Long id) {
+
+	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public String getNome() {
-		return nome;
+
+	public String getDefinition() {
+		return definition;
 	}
-	
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public void setDefinition(String definition) {
+		this.definition = definition;
 	}
-	
-	public float getVersao() {
-		return versao;
+
+	public float getBp() {
+		return bp;
 	}
-	
-	public void setVersao(float versao) {
-		this.versao = versao;
+
+	public void setBp(float bp) {
+		this.bp = bp;
 	}
-	
-	public String getNcbi_id() {
-		return ncbi_id;
+
+	public Organismo getOrganismo() {
+		return organismo;
 	}
-	
-	public void setNcbi_id(String ncbi_id) {
-		this.ncbi_id = ncbi_id;
+
+	public void setOrganismo(Organismo organismo) {
+		this.organismo = organismo;
 	}
-	
-	
+
+	public Set<Gene> getGenes() {
+		return genes;
+	}
+
+	public void setGenes(Set<Gene> genes) {
+		this.genes = genes;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Genoma other = (Genoma) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Genoma [id=" + id + ", definition=" + definition + ", bp=" + bp + ", organismo=" + organismo
+				+ ", genes=" + genes + "]";
+	}
 		
 }

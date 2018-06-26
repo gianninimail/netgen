@@ -13,9 +13,9 @@ public interface GenomaINTdao {
 
 	void Excluir(Genoma _genoma) throws SQLException;
 	
-	void ExcluirPorID(final Long _id) throws SQLException;
+	void ExcluirPorID(final String _id) throws SQLException;
 
-	Genoma PegarPeloID(Long _id) throws SQLException;
+	Genoma PegarPeloID(String _id) throws SQLException;
 
 	Long PegarID() throws SQLException;
 	

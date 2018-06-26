@@ -22,10 +22,13 @@ public class Gene implements Serializable {
 	
 	@Id
 	@Column(name = "id")
-	private Long id;
+	private String id;
 	
 	@Column(name = "seq_nuc")
 	private String seq_nuc;
+	
+	@Column(name = "name")
+	private String name;
 	
 	@Column(name = "reference_id")
 	private String reference_id;
@@ -41,7 +44,7 @@ public class Gene implements Serializable {
 		
 	}
 	
-	public Gene(Long _id, String _seq_nuc, String _reference_id, Set<Genoma> _genomas) {
+	public Gene(String _id, String _seq_nuc, String _reference_id, Set<Genoma> _genomas) {
 		super();
 		this.id = _id;
 		this.seq_nuc = _seq_nuc;
@@ -49,11 +52,11 @@ public class Gene implements Serializable {
 		this.genomas = _genomas;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -67,6 +70,14 @@ public class Gene implements Serializable {
 
 	public String getReference_id() {
 		return reference_id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setReference_id(String reference_id) {

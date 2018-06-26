@@ -46,19 +46,30 @@ import org.sbml.jsbml.util.Pair;
 import org.sbml.jsbml.xml.XMLNode;
 
 import dados.ComponenteDAO;
+import dados.EnzimasHabilitaReacoesDAO;
+import dados.EnzimeDAO;
 import dados.GeneAssociacaoDAO;
+import dados.GeneDAO;
+import dados.GenomaDAO;
 import dados.LimiteFluxoDAO;
+import dados.ProteinaDAO;
 import dados.ReacaoDAO;
 import dados.ReacaoTemComponentesDAO;
 import dados.ReconstrucaoDAO;
 import dados.ReconstrucaoTemReacoesDAO;
 import entidades.Componente;
+import entidades.Enzima;
+import entidades.EnzimasHabilitaReacoes;
+import entidades.Gene;
 import entidades.GeneAssociacao;
+import entidades.Genoma;
 import entidades.LimiteFluxo;
+import entidades.Proteina;
 import entidades.Reacao;
 import entidades.ReacaoTemComponentes;
 import entidades.Reconstrucao;
 import entidades.ReconstrucaoTemReacoes;
+import entidades.Usuario;
 import util.Arvore;
 import util.ArvoreUtil;
 import util.PilhaUtil;
@@ -324,14 +335,22 @@ public class JsbmlBeanV2L1 implements Serializable {
 				
 				reacao = obterReacaoDeReaction(_reaction);
 				daoR.Inserir(reacao);
-				
-				//TENTAR PEGAR EC NUNBER e CRIAR OBJETO ENZIMA NO BD
-				String ECnumber = obterECsNumbersDeComentarios(_reaction);
 			}
 			else {
 				
 				reacao = daoR.PegarPeloID(_reaction.getId());
 			}
+			
+			/*
+			//TENTAR PEGAR EC NUNBER e CRIAR OBJETO ENZIMA NO BD
+			String ECnumber = obterECsNumbersDeComentarios(_reaction);
+			
+			if (!ECnumber.equals("")) {
+				List<Enzime> enzimes = obterEnzimesDoKEEG(ECnumber);
+				
+				
+			}
+			*/
 			
 			//MONTA LISTA DE GENES ASSOCIADOS E INSERE NO BD
 			List<String> genesAssociados = obterListaGenesAssociadosDeComentarios(_reaction);
@@ -466,6 +485,42 @@ public class JsbmlBeanV2L1 implements Serializable {
 		}
 	}
 	
+	private List<Enzima> obterEnzimesDoKEEG(String _ec_number) {	
+		try {
+			List<Enzima> enzimes = new ArrayList<Enzima>();
+			
+			String[] ecs = _ec_number.split("(,|;)");
+			
+			for (String ec : ecs) {
+				
+				ec = ec.replace("(", "");
+				ec = ec.replace(")", "");
+				
+				EnzimeDAO dao = new EnzimeDAO();
+				
+				if (!dao.ExisteEnzime(ec)) {
+					
+					HtmlParserBean hpb = new HtmlParserBean();
+					
+					Enzima ez = hpb.obterEnzimePeloEcNumberKEGG(ec);
+					
+					enzimes.add(ez);
+				}
+				else {
+					Enzima ez = dao.PegarPeloID(ec);
+					
+					enzimes.add(ez);
+				}
+			}
+			
+			return enzimes;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public Componente obterComponenteDeSpeciesReference(SpeciesReference _speciesReference) {
 		try {
 
@@ -679,8 +734,23 @@ public class JsbmlBeanV2L1 implements Serializable {
 		return null;
 	}
 	
-	public Reconstrucao novaReconstrucaoPeloSbmlV2L1(String _titulo, String _versao, Map<String, HashMap<String, String>> _sequenciasGBK, Map<String, String> _tabNCBI, List<String> _genesNAOachados, Boolean _inferirGenes, String _idReacaoBiomassa, List<String> _litaIdsReactionsManuais) {
+	public Reconstrucao novaReconstrucaoPeloSbmlV2L1(String _titulo, String _versao, Map<String, HashMap<String, String>> _sequenciasGBK, Map<String, String> _tabNCBI, List<String> _genesNAOachados, Boolean _inferirGenes, String _idReacaoBiomassa, List<String> _litaIdsReactionsManuais, Usuario _user) {
 		try {
+			
+			//SETANDO GENOMA DA RECONSTRUCAO
+			GenomaDAO daoGenoma = new GenomaDAO();
+			/*
+			Genoma genoma = new Genoma();
+			genoma.setId(id);
+			genoma.setDefinition(definition);
+			genoma.setBp(bp);
+			
+			daoGenoma.Inserir(genoma);
+			*/
+			
+			Genoma genoma = daoGenoma.PegarPeloID("CP021380");
+			Set<Genoma> genomas = new HashSet<Genoma>();
+			genomas.add(genoma);
 			
 			//CRIAÇAO DE UMA NOVA RECONSTRUÇÃO NO BD
 			ReconstrucaoDAO daoRec = new ReconstrucaoDAO();	
@@ -689,6 +759,8 @@ public class JsbmlBeanV2L1 implements Serializable {
 			rec.setTitulo(_titulo);
 			rec.setVersion(_versao);
 			rec.setData(new Date());
+			rec.setUser(_user);
+			rec.setGenoma(genoma);
 			
 			daoRec.Inserir(rec);
 			
@@ -700,6 +772,11 @@ public class JsbmlBeanV2L1 implements Serializable {
 			
 			for (Reaction reaction : sbml.getModel().getListOfReactions()) {
 				
+				List<Enzima> enzimasParaInserirNaBase = new ArrayList<Enzima>();
+				List<Gene> genesParaInserirNaBase = new ArrayList<Gene>();
+				List<Proteina> proteinasParaInserirNaBase = new ArrayList<Proteina>();
+				List<EnzimasHabilitaReacoes> EHRsParaInserirNaBase = new ArrayList<EnzimasHabilitaReacoes>();
+				
 				List<String> listaGenes = obterListaGenesAssociadosDeComentarios(reaction);
 				
 				String expressao = obterExpressaoAssociationGenesDeComentarios(reaction);
@@ -710,11 +787,40 @@ public class JsbmlBeanV2L1 implements Serializable {
 					
 					if (!_sequenciasGBK.containsKey(idNCBI)) {
 						expressao = expressao.replace(gene, "false");
-						//System.out.println(t);
 					}
 					else {
 						expressao = expressao.replace(gene, "true");
-						//System.out.println(t);
+						
+						//ASSOCIAÇÔES COM O GENOMA / GENE / PROTEINA / ENZIMA
+						HashMap<String, String> valores = _sequenciasGBK.get(idNCBI);
+						
+						//MONTA LISTA DE GENES DA REAÇÃO PARA INSERIR NO BD
+						Gene gn = new Gene();
+						gn.setId(gene);
+						gn.setTem_grp(true);
+						gn.setName(valores.get("gene"));
+						gn.setReference_id(valores.get("locus_tag"));
+						gn.setGenomas(genomas);
+						genesParaInserirNaBase.add(gn);
+						
+						//MONTA LISTA DE PROTEINAS DA REAÇÃO PARA INSERIR NO BD
+						Proteina pt = new Proteina();
+						pt.setId(idNCBI);
+						pt.setNome(valores.get("product"));
+						pt.setSeq_aa(valores.get("translation"));
+						pt.setGene(gn);
+						//pt.setEnzima(enzima);
+						proteinasParaInserirNaBase.add(pt);
+						
+						//MONTA LISTA DE ENZIMAS DA REAÇÃO PARA INSERIR NO BD
+						if (valores.containsKey("EC_number")) {
+							String ec = valores.get("EC_number");
+							List<Enzima> enzimas = obterEnzimesDoKEEG(ec);
+							for (Enzima e : enzimas) {
+								enzimasParaInserirNaBase.add(e);
+								EHRsParaInserirNaBase.add(new EnzimasHabilitaReacoes(pt, e));
+							}
+						}
 					}
 				}
 				
@@ -725,8 +831,12 @@ public class JsbmlBeanV2L1 implements Serializable {
 				boolean teste = ArvoreUtil.resolverExpBooleana(arvore);
 				
 				if (teste && !listaGenes.isEmpty()) {
-					
+										
 					Reacao reacao = inserirObjetosNaBase(reaction, rec);
+					
+					//inserirDadosAnotacao(genesParaInserirNaBase, proteinasParaInserirNaBase, enzimasParaInserirNaBase);
+					
+					inserirDadosAnotacao(genesParaInserirNaBase, proteinasParaInserirNaBase, enzimasParaInserirNaBase, EHRsParaInserirNaBase, reacao);
 					
 					reacoesDaReconstrucao.add(reacao);
 				}
@@ -1226,6 +1336,48 @@ public class JsbmlBeanV2L1 implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public boolean inserirDadosAnotacao(List<Gene> _genes, List<Proteina> _proteinas, List<Enzima> _enzimes, List<EnzimasHabilitaReacoes> eHRsParaInserirNaBase, Reacao _reacao) {
+		try {
+			
+			GeneDAO geneDAO = new GeneDAO();
+			ProteinaDAO daoProteina = new ProteinaDAO();
+			EnzimeDAO enzimaDAO = new EnzimeDAO();
+			EnzimasHabilitaReacoesDAO daoEHR = new EnzimasHabilitaReacoesDAO();
+			
+			for (Gene gene : _genes) {
+				if(!geneDAO.ExisteGene(gene.getId())) {
+					geneDAO.Inserir(gene);
+				}
+			}
+			
+			for (Proteina proteina : _proteinas) {
+				if(!daoProteina.ExisteProteina(proteina.getId())) {
+					daoProteina.Inserir(proteina);
+				}
+			}
+			
+			for (Enzima enzime : _enzimes) {
+				if(!enzimaDAO.ExisteEnzime(enzime.getEc_number())) {
+					enzimaDAO.Inserir(enzime);
+				}
+			}
+			
+			for (EnzimasHabilitaReacoes EHR : eHRsParaInserirNaBase) {
+				EHR.setReacao(_reacao);
+				
+				if (!daoEHR.ExisteEnzime(EHR)) {
+					daoEHR.Inserir(EHR);
+				}
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 }

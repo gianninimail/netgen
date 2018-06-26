@@ -50,10 +50,8 @@ public class Reacao implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reacao")
 	private Collection<ReconstrucaoTemReacoes> rhrs;
 	
-	/*
-	@ManyToMany(mappedBy = "reacoes")
-	private Set<Reconstrucao> reconstrucoes;
-	*/
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reacao")
+	private Collection<EnzimasHabilitaReacoes> ehrs;
 	
 	public Reacao() {
 		
@@ -145,15 +143,21 @@ public class Reacao implements Serializable {
 		this.rhcs = rhcs;
 	}
 
-	/*
-	public Set<Reconstrucao> getReconstrucoes() {
-		return reconstrucoes;
+	public Collection<ReconstrucaoTemReacoes> getRhrs() {
+		return rhrs;
 	}
 
-	public void setReconstrucoes(Set<Reconstrucao> reconstrucoes) {
-		this.reconstrucoes = reconstrucoes;
+	public void setRhrs(Collection<ReconstrucaoTemReacoes> rhrs) {
+		this.rhrs = rhrs;
 	}
-	*/
+
+	public Collection<EnzimasHabilitaReacoes> getEhrs() {
+		return ehrs;
+	}
+
+	public void setEhrs(Collection<EnzimasHabilitaReacoes> ehrs) {
+		this.ehrs = ehrs;
+	}
 
 	@Override
 	public int hashCode() {

@@ -134,7 +134,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		
 		HashMap<String, HashMap<String, String>> sequenciasGBK = lerArquivoGBK(pathAreTrabalho + this.nomeArquivoGBK);
 		
-		Reconstrucao rec = jsbmlBeanV2L1.novaReconstrucaoPeloSbmlV2L1(this.tituloRede, this.versaoRede, sequenciasGBK, tabNCBI, genesNAOachados, this.inferirGenes, this.idReacaoBiomassa, this.litaIdsReactionsManuais);
+		Reconstrucao rec = jsbmlBeanV2L1.novaReconstrucaoPeloSbmlV2L1(this.tituloRede, this.versaoRede, sequenciasGBK, tabNCBI, genesNAOachados, this.inferirGenes, this.idReacaoBiomassa, this.litaIdsReactionsManuais, this.user);
 		
 		//System.out.println(genesNAOachados.size());
 		
@@ -144,7 +144,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		
 		this.logReconstrucao = executarAnaliseFBA(this.nomeArquivoSaidaSBML, this.nomeArquivoSaidaSBML);
 		
-		EnviarEmail(dataInicial, dataFinal);
+		EnviarEmail(rec.getId().toString(), dataInicial, dataFinal);
 	}
 	
 	public void reconstruirRedeMetabolicaV3L1() {
@@ -171,7 +171,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		
 		String dataFinal = new Date().toString();
 		
-		EnviarEmail(dataInicial, dataFinal);
+		EnviarEmail(rec.getId().toString(), dataInicial, dataFinal);
 	}
 
 	public HashMap<String, UnidFASTA> obterUnidadesFASTAdoArquivo(String _pathArquivoFASTA) {
@@ -429,9 +429,9 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 				
 				ProteinSequence gbk = protSequences.get(k);
 				
-				//String source = gbk.getSource();
+				String source = gbk.getSource();
 				
-				//System.out.println(source);
+				System.out.println(source);
 				
 				List<FeatureInterface<AbstractSequence<AminoAcidCompound>, AminoAcidCompound>> features =  gbk.getFeaturesByType("CDS");
 			
@@ -480,20 +480,20 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		}
 	}
 	
-	public void EnviarEmail(String _dataInicial, String _dataFinal) {	
+	public void EnviarEmail(String _IdReconstruction, String _dataInicial, String _dataFinal) {	
 		try {
 			
 			String titulo = "New Reconstruction started";
 			String msg = "Reconstruction Data: \n"
-				+ "\nID user: " + this.user.getId()
+				+ "\nReconstruction ID: " + _IdReconstruction
 				+ "\nReconstruction user: " + this.user.getNome()
 				+ "\nEmail: " + this.user.getEmail()
 				+ "\nDate and Time Start: " + _dataInicial
 				+ "\nDate and Time Finish: " + _dataFinal
-				+ "\n\n\n\n"
+				+ "\n"
 				+ "-----------------------------------------------------"
-				+ "\nSCRIPT OUTPUT"
-				+ "====================================================="
+				+ "\n==========================MODEL OUTPUT"
+				+ "==========================="
 				+ "\n" + this.logReconstrucao
 				+ "";
 			
@@ -595,7 +595,6 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		this.inferirGenes = inferirGenes;
 	}
 	
-
 	public String getLogReconstrucao() {
 		return logReconstrucao;
 	}

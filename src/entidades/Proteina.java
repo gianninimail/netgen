@@ -2,6 +2,8 @@ package entidades;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.Collection;
+
 import javax.persistence.*;
 
 /**
@@ -21,13 +23,16 @@ public class Proteina implements Serializable {
 	@Column(name = "name")
 	private String nome;
 	
-	@Column(name = "seq_aa")
+	@Column(name = "seq_aa", length = 5000)
 	private String seq_aa;
 	
 	@OneToOne
 	@JoinColumn(name = "gene_id")
 	Gene gene;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "proteina")
+	private Collection<EnzimasHabilitaReacoes> ehrs;
+
 	public Proteina() {
 		super();
 	}   
@@ -64,6 +69,22 @@ public class Proteina implements Serializable {
 		this.seq_aa = seq_aa;
 	}
 	
+	public Gene getGene() {
+		return gene;
+	}
+
+	public void setGene(Gene gene) {
+		this.gene = gene;
+	}
+
+	public Collection<EnzimasHabilitaReacoes> getEhrs() {
+		return ehrs;
+	}
+
+	public void setEhrs(Collection<EnzimasHabilitaReacoes> ehrs) {
+		this.ehrs = ehrs;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

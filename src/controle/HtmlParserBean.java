@@ -1,6 +1,7 @@
 package controle;
 
 import java.io.Serializable;
+import java.util.HashMap;
 //import java.util.HashMap;
 //import java.util.Map;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import entidades.Enzima;
 import entidades.Reacao;
 import entidades.Reconstrucao;
 import fasta.UnidFASTA;
@@ -129,6 +131,151 @@ public class HtmlParserBean implements Serializable {
 			}
 			
 			return reacao;
+			
+		} catch (Exception e) {
+
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Enzima obterEnzimePeloEcNumberKEGG(String _ecNumber) {
+
+		try {
+
+			Enzima enzime = new Enzima();
+			HashMap<String, String> dados = new HashMap<>();
+			
+			Document documento = Jsoup.connect(URL_BASE_EC_NUMBER_KEGG + _ecNumber).get();
+
+			String[] camposPesquisa = { "entry", "class", "name", "sysname", "reaction", "reaction(iubmb)", "reaction(kegg)", "substrate", "product", "comment" };
+
+			Elements listaTHclassTH20 = documento.select("th.th20");
+			Elements listaTHclassTH21 = documento.select("th.th21");
+
+			Elements listaTotalTH = new Elements();
+
+			listaTotalTH.addAll(listaTHclassTH20);
+			listaTotalTH.addAll(listaTHclassTH21);
+
+			for (Element celula : listaTotalTH) {
+
+				String celulaTexto = celula.text();
+
+				for (String campo : camposPesquisa) {
+
+					if (celulaTexto.toLowerCase().contains(campo) && campo.equals("class")) {
+
+						Element td = celula.lastElementSibling();
+
+						String tdTexto = td.text();
+						
+						System.out.println(celulaTexto + ": " + tdTexto);
+						
+						enzime.setClasss(tdTexto);
+						
+						break;
+					}
+					if (celulaTexto.toLowerCase().contains(campo) && campo.equals("sysname")) {
+
+						Element td = celula.lastElementSibling();
+
+						String tdTexto = td.text();
+						
+						System.out.println(celulaTexto + ": " + tdTexto);
+						
+						enzime.setSysname(tdTexto);
+						
+						break;
+					}
+					if (celulaTexto.toLowerCase().contains(campo) && campo.equals("reaction(iubmb)")) {
+
+						Element td = celula.lastElementSibling();
+
+						String tdTexto = td.text();
+						
+						System.out.println(celulaTexto + ": " + tdTexto);
+						
+						enzime.setReaction_iubmb(tdTexto);
+						
+						break;
+					}
+					if (celulaTexto.toLowerCase().contains(campo) && campo.equals("reaction(kegg)")) {
+
+						Element td = celula.lastElementSibling();
+
+						String tdTexto = td.text();
+						
+						System.out.println(celulaTexto + ": " + tdTexto);
+						
+						enzime.setReaction_kegg(tdTexto);
+						
+						break;
+					}
+					if (celulaTexto.toLowerCase().contains(campo) && campo.equals("substrate")) {
+
+						Element td = celula.lastElementSibling();
+
+						String tdTexto = td.text();
+
+						String[] substratos = tdTexto.split(";\\s");
+						
+						System.out.println(celulaTexto + ": " + tdTexto);
+						
+						/*
+						for (String sub : substratos) {
+							
+							String[] componente = sub.split("\\[|\\]");
+							
+							System.out.println("Nome: " + componente[0]);
+							System.out.println("ID KEGG: " + componente[1]);
+						}
+						*/
+						
+						enzime.setSubstract(tdTexto);
+						
+						break;
+					}
+					if (celulaTexto.toLowerCase().contains(campo) && campo.equals("product")) {
+
+						Element td = celula.lastElementSibling();
+
+						String tdTexto = td.text();
+						
+						String[] produtos = tdTexto.split(";");
+						
+						System.out.println(celulaTexto + ": " + tdTexto);
+						/*
+						for (String pro : produtos) {
+							
+							String[] componente = pro.split("\\[|\\]");
+							
+							System.out.println("Nome: " + componente[0]);
+							System.out.println("ID KEGG: " + componente[1]);
+						}
+						*/
+						enzime.setProduct(tdTexto);
+						
+						break;
+					}
+					if (celulaTexto.toLowerCase().contains(campo) && campo.equals("comment")) {
+
+						Element td = celula.lastElementSibling();
+
+						String tdTexto = td.text();
+						
+						System.out.println(celulaTexto + ": " + tdTexto);
+						
+						
+						enzime.setComment(tdTexto);
+						break;
+					}
+				}
+			}
+			
+			enzime.setEc_number(_ecNumber);
+			
+			return enzime;
 			
 		} catch (Exception e) {
 

@@ -87,7 +87,7 @@ public class TesteJSBML {
 		//html.continuarReconstrucaoPeloFasta(rec, unidsFASTA, genesNAOachados);
 		ReconstrucaoDAO dao = new ReconstrucaoDAO();
 		
-		Reconstrucao reconstrucao = dao.PegarPeloID(2L);
+		Reconstrucao reconstrucao = dao.PegarPeloID(1L);
 		
 		JsbmlBeanV2L1 jbml = new JsbmlBeanV2L1(pathAreTrabalho + nomeArquivoBaseSBML);
 		

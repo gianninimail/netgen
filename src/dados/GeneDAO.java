@@ -76,7 +76,7 @@ public class GeneDAO implements GeneINTdao {
 	}
 	
 	@Override
-	public void ExcluirPorID(Long _id) throws SQLException {
+	public void ExcluirPorID(String _id) throws SQLException {
 		
 		Gene gene = PegarPeloID(_id);
 		
@@ -85,7 +85,7 @@ public class GeneDAO implements GeneINTdao {
 	}
 
 	@Override
-	public Gene PegarPeloID(Long _id) throws SQLException {
+	public Gene PegarPeloID(String _id) throws SQLException {
 		
 		Gene gene = entityManager.find(Gene.class, _id);
 		
@@ -105,6 +105,19 @@ public class GeneDAO implements GeneINTdao {
 		List<Gene> genes = entityManager.createQuery("FROM " + Gene.class.getName()).getResultList();
 		
 		return genes;
+	}
+
+	@Override
+	public boolean ExisteGene(String _id) throws SQLException {
+
+		Gene gene = entityManager.find(Gene.class, _id);
+		
+		if (gene != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 }

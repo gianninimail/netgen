@@ -41,11 +41,14 @@ public class Reconstrucao implements Serializable {
 	@Column(name = "date")
 	private Date data;
 	
-	/*
-	@ManyToMany
-	@JoinTable(name = "reconstrucao_reacao", joinColumns = @JoinColumn(name = "reconstruction_id"), inverseJoinColumns = @JoinColumn(name = "reacao_id"))
-	private Collection<Reacao> reacoes;
-	*/
+	
+	@ManyToOne
+	@JoinColumn(name = "genoma_id")
+	private Genoma genoma;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private Usuario user;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "reconstrucao")
 	private Collection<ReconstrucaoTemReacoes> rhrs;
@@ -109,6 +112,18 @@ public class Reconstrucao implements Serializable {
 	}
 	*/
 	
+	public Genoma getGenoma() {
+		return genoma;
+	}
+	public void setGenoma(Genoma genoma) {
+		this.genoma = genoma;
+	}
+	public Usuario getUser() {
+		return user;
+	}
+	public void setUser(Usuario user) {
+		this.user = user;
+	}
 	public Collection<ReconstrucaoTemReacoes> getRhrs() {
 		return rhrs;
 	}
