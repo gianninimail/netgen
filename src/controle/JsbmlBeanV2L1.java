@@ -236,7 +236,12 @@ public class JsbmlBeanV2L1 implements Serializable {
 			String[] info = noECnumber.getCharacters().replaceAll(":\\s", ":").split(":");
 			
 			if (info.length > 1) {
-				return info[1];
+				
+				boolean ehEC = info[1].matches("\\d\\.\\d\\.\\d.*");
+				
+				if (ehEC) {
+					return info[1];
+				}
 			}
 			
 			return "";
@@ -520,6 +525,28 @@ public class JsbmlBeanV2L1 implements Serializable {
 			return null;
 		}
 	}
+	
+	private Enzima obterEnzimaDoKEEG(String _ec_number) {	
+		try {
+						
+			EnzimeDAO dao = new EnzimeDAO();
+			
+			if (!dao.ExisteEnzime(_ec_number)) {
+				
+				HtmlParserBean hpb = new HtmlParserBean();
+				
+				Enzima ez = hpb.obterEnzimePeloEcNumberKEGG(_ec_number);
+				
+				return ez;
+			}
+			
+			return dao.PegarPeloID(_ec_number);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public Componente obterComponenteDeSpeciesReference(SpeciesReference _speciesReference) {
 		try {
@@ -767,7 +794,7 @@ public class JsbmlBeanV2L1 implements Serializable {
 			//----------------------------------
 			
 			Set<Reacao> reacoesDaReconstrucao = new HashSet<Reacao>();
-			
+			List<Reaction> reactionCandidatas = new ArrayList<Reaction>();
 			//System.out.println(_tabNCBI.size());
 			
 			for (Reaction reaction : sbml.getModel().getListOfReactions()) {
@@ -834,19 +861,90 @@ public class JsbmlBeanV2L1 implements Serializable {
 										
 					Reacao reacao = inserirObjetosNaBase(reaction, rec);
 					
-					//inserirDadosAnotacao(genesParaInserirNaBase, proteinasParaInserirNaBase, enzimasParaInserirNaBase);
-					
 					inserirDadosAnotacao(genesParaInserirNaBase, proteinasParaInserirNaBase, enzimasParaInserirNaBase, EHRsParaInserirNaBase, reacao);
 					
 					reacoesDaReconstrucao.add(reacao);
+				}
+				else if (listaGenes.isEmpty() || listaGenes.size() == 1){
+					
+					boolean inseriu = false;
+					String ecs_reaction = this.obterECsNumbersDeComentarios(reaction);
+					
+					if (!ecs_reaction.equals("")) {
+						
+						for (String key : _sequenciasGBK.keySet()) {
+							
+							HashMap<String, String> values = _sequenciasGBK.get(key);
+							
+							if (values.containsKey("EC_number")) {
+								
+								String ecs_gbk = values.get("EC_number");
+								String[] ecsGBK = ecs_gbk.split("(,|;)");
+								List<String> listaEcsGBK = new ArrayList<String>();
+								for (String ec : ecsGBK) {
+									ec = ec.replace("(", "");
+									ec = ec.replace(")", "");
+									listaEcsGBK.add(ec);
+								}
+								
+								List<String> listaEcsReaction = new ArrayList<String>();
+								String ecsR[] = ecs_reaction.split(",");
+								for (String ecR : ecsR) {
+									listaEcsReaction.add(ecR);
+								}
+								
+								//VERIFICA SE TODOS ECS DO GBK ESTAO CONTIDOS NOS ECS DA REACTION
+								if (listaEcsReaction.containsAll(listaEcsGBK)) {
+									
+									Reacao reacao = inserirObjetosNaBase(reaction, rec);
+									reacoesDaReconstrucao.add(reacao);
+									
+									//MONTA LISTA DE GENES DA REAÇÃO PARA INSERIR NO BD
+									Gene gn = new Gene();
+									gn.setId(values.get("locus_tag"));
+									gn.setTem_grp(true);
+									gn.setName(values.get("gene"));
+									gn.setReference_id(values.get("locus_tag"));
+									gn.setGenomas(genomas);
+									
+									Proteina pt = new Proteina();
+									pt.setId(key);
+									pt.setNome(values.get("product"));
+									pt.setSeq_aa(values.get("translation"));
+									pt.setGene(gn);
+									
+									for (String ec : listaEcsGBK) {
+										
+										Enzima ez = obterEnzimaDoKEEG(ec);
+
+										EnzimasHabilitaReacoes ehrs = new EnzimasHabilitaReacoes(pt, ez, reacao);
+										
+										inserirDadosAnotacao(gn, pt, ez, ehrs);
+									}
+									
+									inseriu = true;
+									break;
+								}
+							}
+						}
+						if (!inseriu) {
+							reactionCandidatas.add(reaction);
+						}
+					}
+					else {
+						reactionCandidatas.add(reaction);
+					}
+				}
+				else {
+					reactionCandidatas.add(reaction);
 				}
 			}
 			
 			if (_inferirGenes) {
 				
-				List<Reaction> reactions = sbml.getModel().getListOfReactions();
-				List<Reaction> reactionCandidatas = new ArrayList<Reaction>();
+				//List<Reaction> reactions = sbml.getModel().getListOfReactions();
 				List<Reaction> reactionInferidas = new ArrayList<Reaction>();
+				/*
 				boolean achou = false;
 				
 				for (Reaction reaction : reactions) {
@@ -862,7 +960,7 @@ public class JsbmlBeanV2L1 implements Serializable {
 						reactionCandidatas.add(reaction);
 					}
 				}
-				
+				*/
 				for (Reaction reaction : reactionCandidatas) {
 					
 					//List<String> listaGenes = obterListaGenesAssociadosDeComentarios(reaction);
@@ -870,7 +968,7 @@ public class JsbmlBeanV2L1 implements Serializable {
 					
 					if (subsytem.equalsIgnoreCase("Exchange")) {
 						
-						System.out.println("Reação inferida no modelo: " + reaction.getId());
+						System.out.println("Reação Exchange inferida no modelo: " + reaction.getId());
 						
 						Reacao reacao = inserirObjetosNaBase(reaction, rec);
 						
@@ -1023,6 +1121,7 @@ public class JsbmlBeanV2L1 implements Serializable {
 			return null;
 		}
 	}
+	
 	
 	@SuppressWarnings({ "static-access", "unchecked" })
 	public boolean gerarSBMLdeReconstrucao(Reconstrucao _reconstrucao, String _idReacaoBiomassa, String _pathSaida) {
@@ -1251,6 +1350,7 @@ public class JsbmlBeanV2L1 implements Serializable {
 		}
 	}
 	
+	
 	public Association obterASSOCIATIONfromArvoreExpPosfixa(Association _ass, Arvore _arvore, int _level, int _version, List<GeneProduct> _listaGeneProduct) {
 		try {
 			
@@ -1339,6 +1439,7 @@ public class JsbmlBeanV2L1 implements Serializable {
 		}
 	}
 
+	
 	public boolean inserirDadosAnotacao(List<Gene> _genes, List<Proteina> _proteinas, List<Enzima> _enzimes, List<EnzimasHabilitaReacoes> eHRsParaInserirNaBase, Reacao _reacao) {
 		try {
 			
@@ -1371,6 +1472,39 @@ public class JsbmlBeanV2L1 implements Serializable {
 				if (!daoEHR.ExisteEnzime(EHR)) {
 					daoEHR.Inserir(EHR);
 				}
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	private boolean inserirDadosAnotacao(Gene _gn, Proteina _pt, Enzima _ez, EnzimasHabilitaReacoes _ehrs) {
+		try {
+			
+			GeneDAO geneDAO = new GeneDAO();
+			ProteinaDAO daoProteina = new ProteinaDAO();
+			EnzimeDAO enzimaDAO = new EnzimeDAO();
+			EnzimasHabilitaReacoesDAO daoEHR = new EnzimasHabilitaReacoesDAO();
+				
+			if(!geneDAO.ExisteGene(_gn.getId())) {
+				geneDAO.Inserir(_gn);
+			}
+		
+			if(!daoProteina.ExisteProteina(_pt.getId())) {
+				daoProteina.Inserir(_pt);
+			}
+		
+			if(!enzimaDAO.ExisteEnzime(_ez.getEc_number())) {
+				enzimaDAO.Inserir(_ez);
+			}
+			
+			if (!daoEHR.ExisteEnzime(_ehrs)) {
+				daoEHR.Inserir(_ehrs);
 			}
 			
 			return true;

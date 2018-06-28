@@ -8,9 +8,9 @@ import javax.persistence.*;
  * The persistent class for the Ortholog database table.
  * 
  */
-@Entity
-@NamedQuery(name="Ortholog.findAll", query="SELECT o FROM Ortholog o")
-@Table(name = "Ortholog")
+//@Entity
+//@NamedQuery(name="Ortholog.findAll", query="SELECT o FROM Ortholog o")
+//@Table(name = "Ortholog")
 public class Ortholog implements Serializable {
 	private static final long serialVersionUID = 1L;
 

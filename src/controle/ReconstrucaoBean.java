@@ -484,7 +484,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		try {
 			
 			String titulo = "New Reconstruction started";
-			String msg = "Reconstruction Data: \n"
+			String msg = "==========================RECONSTRUCTION INFORMATION========================== \n"
 				+ "\nReconstruction ID: " + _IdReconstruction
 				+ "\nReconstruction user: " + this.user.getNome()
 				+ "\nEmail: " + this.user.getEmail()
@@ -492,8 +492,7 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 				+ "\nDate and Time Finish: " + _dataFinal
 				+ "\n"
 				+ "-----------------------------------------------------"
-				+ "\n==========================MODEL OUTPUT"
-				+ "==========================="
+				+ "\n==========================MODEL OUTPUT==========================="
 				+ "\n" + this.logReconstrucao
 				+ "";
 			

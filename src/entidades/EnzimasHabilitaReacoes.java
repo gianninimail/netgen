@@ -23,6 +23,13 @@ public class EnzimasHabilitaReacoes implements Serializable {
 		this.proteina = proteina;
 		this.enzima = enzima;
 	}
+	
+	public EnzimasHabilitaReacoes(Proteina proteina, Enzima enzima, Reacao reacao) {
+		super();
+		this.proteina = proteina;
+		this.enzima = enzima;
+		this.reacao = reacao;
+	}
 
 	@Id
 	@ManyToOne

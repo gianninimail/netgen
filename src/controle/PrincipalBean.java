@@ -267,7 +267,7 @@ public class PrincipalBean implements Serializable {
 				
 				this.arqGBK = event.getFile();
 			
-				this.arqGBK.write(pathGBK);
+				this.arqGBK.write(this.pathAreTrabalho + pathGBK);
 				
 				this.nomeArquivoGBK = pathGBK;
 				
@@ -289,7 +289,7 @@ public class PrincipalBean implements Serializable {
 				
 				this.arqSBMLbase = event.getFile();
 			
-				this.arqSBMLbase.write(pathSBML);
+				this.arqSBMLbase.write(this.pathAreTrabalho + pathSBML);
 				
 				this.nomeArquivoBaseSBML = pathSBML;
 				

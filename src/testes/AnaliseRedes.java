@@ -10,7 +10,7 @@ public class AnaliseRedes {
 		
 		String pathAreTrabalho = "/ccbh4851system/";
 
-		JsbmlBeanV2L1 sbmlThiago = new JsbmlBeanV2L1(pathAreTrabalho + "CCBH4851_v6.xml");
+		JsbmlBeanV2L1 sbmlThiago = new JsbmlBeanV2L1(pathAreTrabalho + "CCBH4851_v3.xml");
 		
 		List<String> lThiago = sbmlThiago.obterListaReactionDoModelo();
 		

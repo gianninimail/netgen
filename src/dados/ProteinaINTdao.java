@@ -3,7 +3,6 @@ package dados;
 import java.sql.SQLException;
 import java.util.List;
 
-import entidades.Enzima;
 import entidades.Proteina;
 
 public interface ProteinaINTdao {
