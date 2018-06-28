@@ -349,22 +349,28 @@ public class PrincipalBean implements Serializable {
 				listaReactionsManuais.add("R_rxn02476");
 				listaReactionsManuais.add("R_rxn00695");
 				listaReactionsManuais.add("R_ATPM");
-				//------------------------------------------
+				
 				listaReactionsManuais.add("R_rxn05468");//VERIFICAR
+				
+				listaReacoesDiponiveis.removeAll(listaReactionsManuais);
+				//------------------------------------------
+				
+				/*
 				listaReactionsManuais.add("R_rPY00182");
 				listaReactionsManuais.add("R_rPY00180");
 				listaReactionsManuais.add("R_rPY00166");
 				listaReactionsManuais.add("R_rPY00171");
 				listaReactionsManuais.add("R_rPY00174");
 				listaReactionsManuais.add("R_rPY00177");
-				//listaReactionsManuais.add("R_rxn01268");
-				//listaReactionsManuais.add("R_rxn01729");
-				//listaReactionsManuais.add("R_rxn05064");
-				//listaReactionsManuais.add("R_rxn05467");
-				//listaReactionsManuais.add("R_rxn05319");
-				//listaReactionsManuais.add("R_rxn10577");
-				//listaReactionsManuais.add("R_rxn13789");
-				//listaReactionsManuais.add("R_rxn00420");
+				listaReactionsManuais.add("R_rxn01268");
+				listaReactionsManuais.add("R_rxn01729");
+				listaReactionsManuais.add("R_rxn05064");
+				listaReactionsManuais.add("R_rxn05467");
+				listaReactionsManuais.add("R_rxn05319");
+				listaReactionsManuais.add("R_rxn10577");
+				listaReactionsManuais.add("R_rxn13789");
+				listaReactionsManuais.add("R_rxn00420");
+				*/
 				
 				this.reacoes = new DualListModel<>(listaReacoesDiponiveis, listaReactionsManuais);
 			}

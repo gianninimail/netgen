@@ -1122,7 +1122,6 @@ public class JsbmlBeanV2L1 implements Serializable {
 		}
 	}
 	
-	
 	@SuppressWarnings({ "static-access", "unchecked" })
 	public boolean gerarSBMLdeReconstrucao(Reconstrucao _reconstrucao, String _idReacaoBiomassa, String _pathSaida) {
 		try {
@@ -1350,7 +1349,6 @@ public class JsbmlBeanV2L1 implements Serializable {
 		}
 	}
 	
-	
 	public Association obterASSOCIATIONfromArvoreExpPosfixa(Association _ass, Arvore _arvore, int _level, int _version, List<GeneProduct> _listaGeneProduct) {
 		try {
 			
@@ -1439,7 +1437,6 @@ public class JsbmlBeanV2L1 implements Serializable {
 		}
 	}
 
-	
 	public boolean inserirDadosAnotacao(List<Gene> _genes, List<Proteina> _proteinas, List<Enzima> _enzimes, List<EnzimasHabilitaReacoes> eHRsParaInserirNaBase, Reacao _reacao) {
 		try {
 			
@@ -1481,7 +1478,6 @@ public class JsbmlBeanV2L1 implements Serializable {
 			return false;
 		}
 	}
-	
 	
 	private boolean inserirDadosAnotacao(Gene _gn, Proteina _pt, Enzima _ez, EnzimasHabilitaReacoes _ehrs) {
 		try {

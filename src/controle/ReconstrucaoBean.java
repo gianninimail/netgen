@@ -429,9 +429,9 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 				
 				ProteinSequence gbk = protSequences.get(k);
 				
-				String source = gbk.getSource();
+				//String source = gbk.getSource();
 				
-				System.out.println(source);
+				//System.out.println(source);
 				
 				List<FeatureInterface<AbstractSequence<AminoAcidCompound>, AminoAcidCompound>> features =  gbk.getFeaturesByType("CDS");
 			
