@@ -202,7 +202,6 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private String converterGBparaFASTA(String _pathInArqGBK, String _pathOutArqFASTA) {
 		try {
 			
@@ -247,7 +246,6 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private String ajustarArquivoFastaParaAnaliseOrtologia(String _pathArquivoFASTA, int _colunaID) {
 		try {
 			
@@ -290,7 +288,6 @@ public class ReconstrucaoBean implements Serializable, Runnable {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private String executarAnaliseOrtologia(String _pathArquivoParaAnalise) {
 		try {
 			

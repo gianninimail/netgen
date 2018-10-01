@@ -1,7 +1,7 @@
 package controle;
 
 import java.io.Serializable;
-import java.util.HashMap;
+//import java.util.HashMap;
 //import java.util.HashMap;
 //import java.util.Map;
 import java.util.List;
@@ -144,7 +144,7 @@ public class HtmlParserBean implements Serializable {
 		try {
 
 			Enzima enzime = new Enzima();
-			HashMap<String, String> dados = new HashMap<>();
+			//HashMap<String, String> dados = new HashMap<>();
 			
 			Document documento = Jsoup.connect(URL_BASE_EC_NUMBER_KEGG + _ecNumber).get();
 
@@ -218,7 +218,7 @@ public class HtmlParserBean implements Serializable {
 
 						String tdTexto = td.text();
 
-						String[] substratos = tdTexto.split(";\\s");
+						//String[] substratos = tdTexto.split(";\\s");
 						
 						System.out.println(celulaTexto + ": " + tdTexto);
 						
@@ -242,7 +242,7 @@ public class HtmlParserBean implements Serializable {
 
 						String tdTexto = td.text();
 						
-						String[] produtos = tdTexto.split(";");
+						//String[] produtos = tdTexto.split(";");
 						
 						System.out.println(celulaTexto + ": " + tdTexto);
 						/*
